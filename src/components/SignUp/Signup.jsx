@@ -85,18 +85,6 @@ export default function Signup({ Signup }) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  function API(values) {
-    if (Signup === true) {
-      dispatch({ type: "REGISTRATION", payload: values });
-    } else {
-      console.log(values);
-      dispatch({ type: "LOGIN", payload: values });
-    }
-  }
-
-  // if (isLoggedIn()) {
-  //     return <Redirect to="/admin/dashboard" />
-  // }
 
   const Title = () => {
     if (Signup === true) {
@@ -122,42 +110,198 @@ export default function Signup({ Signup }) {
     }
   };
 
-  const LoginForm = ({ errors, values, handleChange, handleBlur, touched }) => {
+  const LoginForm = () => {
     if (Signup === true) {
       return (
-        <>
-          <Typography className={classes.greyText}>Name</Typography>
-          <TextField
-            className={classes.inputFields}
-            variant="outlined"
-            margin="normal"
-            value={values.name}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            size="small"
-            id="name"
-            fullWidth
-          />
-          {errors.name && touched.name && (
-            <div className="input-feedback">{errors.name}</div>
-          )}
-          <Typography className={classes.greyText}>Phone</Typography>
-          <TextField
-            className={classes.inputFields}
-            variant="outlined"
-            margin="normal"
-            value={values.phone}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            size="small"
-            id="phone"
-            fullWidth
-          />
-          {errors.phone && touched.phone && (
-            <div className="input-feedback">{errors.phone}</div>
-          )}
-        </>
+        <Formik
+          initialValues={{ email: "", password: "", name: "", phone: "" }}
+          onSubmit={async (values) => {
+            dispatch({ type: "REGISTRATION", payload: values });
+          }}
+          validationSchema={Yup.object().shape({
+            name: Yup.string().required("Required"),
+            email: Yup.string().email().required("Required"),
+            password: Yup.string().required("Required"),
+            phone: Yup.string().required("Required"),
+          })}
+        >
+          {(props) => {
+            const {
+              values,
+              touched,
+              errors,
+              dirty,
+              isSubmitting,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              handleReset,
+            } = props;
+            return (
+              <form onSubmit={handleSubmit}>
+                <Typography className={classes.greyText}>Name</Typography>
+                <TextField
+                  className={classes.inputFields}
+                  variant="outlined"
+                  margin="normal"
+                  value={values.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  size="small"
+                  id="name"
+                  fullWidth
+                />
+                {errors.name && touched.name && (
+                  <div className="input-feedback">{errors.name}</div>
+                )}
+                <Typography className={classes.greyText}>Phone</Typography>
+                <TextField
+                  className={classes.inputFields}
+                  variant="outlined"
+                  margin="normal"
+                  value={values.phone}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  size="small"
+                  id="phone"
+                  fullWidth
+                />
+                {errors.phone && touched.phone && (
+                  <div className="input-feedback">{errors.phone}</div>
+                )}
+
+                <Typography className={classes.greyText}>Email</Typography>
+                <TextField
+                  className={classes.inputFields}
+                  variant="outlined"
+                  margin="normal"
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  size="small"
+                  id="email"
+                  fullWidth
+                />
+                {errors.email && touched.email && (
+                  <div className="input-feedback">{errors.email}</div>
+                )}
+                <Typography className={classes.greyText}>Password</Typography>
+                <TextField
+                  size="small"
+                  className={classes.inputFields}
+                  variant="outlined"
+                  margin="normal"
+                  type={"password"}
+                  id="password"
+                  fullWidth
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.password && touched.password && (
+                  <div className="input-feedback">{errors.password}</div>
+                )}
+
+                <Button
+                  variant="contained"
+                  className={classes.circularButton}
+                  type="submit"
+                  // disabled={isSubmitting}
+                  style={{ display: "block", margin: "40px auto" }}
+                >
+                  Submit
+                </Button>
+              </form>
+            );
+          }}
+        </Formik>
       );
+    }
+    else{
+      return(<>
+      
+      <Formik
+      initialValues={{ email: "", password: "" }}
+      onSubmit={async values => {
+        dispatch({ type: "LOGIN", payload: values });
+
+      }}
+      validationSchema={Yup.object().shape({
+  
+        email: Yup.string().email()
+          .required("Required"),
+        password: Yup.string()
+          .required("Required"),
+         
+      })}
+    >
+      {props => {
+        const {
+          values,
+          touched,
+          errors,
+          dirty,
+          isSubmitting,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          handleReset
+        } = props;
+        return (
+          <form onSubmit={handleSubmit}>
+           
+     
+            <Typography className={classes.greyText}>Email</Typography>
+            <TextField
+              className={classes.inputFields}
+              variant="outlined"
+              margin="normal"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              size="small"
+              id="email"
+              fullWidth
+            />
+            {errors.email && touched.email && (
+              <div className="input-feedback">{errors.email}</div>
+            )}
+            <Typography className={classes.greyText}>Password</Typography>
+            <TextField
+              size="small"
+              className={classes.inputFields}
+              variant="outlined"
+              margin="normal"
+              type={"password"}
+              id="password"
+              fullWidth
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+
+            />
+            {errors.password && touched.password && (
+              <div className="input-feedback">{errors.password}</div>
+            )}
+
+            
+            <Button
+
+
+              variant="contained"
+              className={classes.circularButton}
+              type="submit"
+              // disabled={isSubmitting}
+              style={{ display: "block", margin: "40px auto" }}
+            >
+              Submit
+            </Button>
+        
+
+          </form>
+        );
+      }}
+    </Formik></>)
     }
   };
   return (
@@ -182,83 +326,7 @@ export default function Signup({ Signup }) {
           {Title()}
         </div>
         <Card className={classes.cards}>
-          <Formik
-            initialValues={{
-              name: "",
-              email: "",
-              password: "",
-              confirm: "",
-              phone: "",
-            }}
-            onSubmit={async (values) => {
-              API(values);
-            }}
-            validationSchema={Yup.object().shape({
-              name: Yup.string().required("Required"),
-              email: Yup.string().email().required("Required"),
-              password: Yup.string().required("Required"),
-              phone: Yup.string().required("Required"),
-             
-            })}
-          >
-            {(props) => {
-              const {
-                values,
-                touched,
-                errors,
-
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                handleReset,
-              } = props;
-              return (
-                <form onSubmit={handleSubmit}>
-                  {LoginForm(props)}
-                  <Typography className={classes.greyText}>Email</Typography>
-                  <TextField
-                    className={classes.inputFields}
-                    variant="outlined"
-                    margin="normal"
-                    value={values.email}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    size="small"
-                    id="email"
-                    fullWidth
-                  />
-                  {errors.email && touched.email && (
-                    <div className="input-feedback">{errors.email}</div>
-                  )}
-                  <Typography className={classes.greyText}>Password</Typography>
-                  <TextField
-                    size="small"
-                    className={classes.inputFields}
-                    variant="outlined"
-                    margin="normal"
-                    id="password"
-                    type="password"
-                    fullWidth
-                    value={values.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                  {errors.password && touched.password && (
-                    <div className="input-feedback">{errors.password}</div>
-                  )}
-
-                  <Button
-                    variant="contained"
-                    className={classes.circularButton}
-                    type="submit"
-                    style={{ display: "block", margin: "40px auto" }}
-                  >
-                    Submit
-                  </Button>
-                </form>
-              );
-            }}
-          </Formik>
+     {LoginForm()}
         </Card>
 
         <Typography

@@ -28,16 +28,16 @@ function App() {
 
   return (
     <div className="container" >
-
+{}
       <BrowserRouter>
         <StoreProvider store={store}>
           <Topbar />
           <Routes >
             
-            <Route exact path="/" element={<Home />} />
+            <Route exact path="/" element={isLoggedIn()?<Home />:<Signup Signup={false} />} />
             
-            <Route exact path="/author" element={<Addauthor />} />
-            <Route  path="/signup" element={<Signup Signup={true}  />}  >
+            <Route exact path="/author" element={isLoggedIn()?<Addauthor />:<Signup Signup={false}/>} />
+            <Route  path="/signup" element={isLoggedIn()?<Home/>:<Signup Signup={true}  />}  >
           
             </Route>
             <Route exact path="/signin" element={<Signup Signup={false}  />} />
