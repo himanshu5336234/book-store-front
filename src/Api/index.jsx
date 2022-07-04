@@ -1,14 +1,14 @@
 import { put } from "redux-saga/effects";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import { Navigate } from "react-router-dom";
 
-const API = "https://5d76bf96515d1a0014085cf9.mockapi.io/product";
-const NEW_HOST = "http://localhost:8000";
+const NEW_HOST = "https://shoplanea.herokuapp.com";
 
 export function* GetLogin({ payload }) {
-
   const data = yield fetch(`${NEW_HOST}/signin`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json" ,"Access-Control-Allow-Origin":"*"},
     body: JSON.stringify(payload),
   })
     .then((res) => {
@@ -18,21 +18,22 @@ export function* GetLogin({ payload }) {
       throw error;
     });
 
-  if (data.status) {
+  if (data.status == true) {
     localStorage.setItem("Token", data.Token);
-
-    alert(data.message)
-    // values.callback();
+    
+    alert(data.message);
+  window.location="/"
+   
+  } else {
+   alert(data.message);
   }
-
   yield put({ type: "GOT_LOGIN", data });
 }
 
 export function* GetRegistration({ payload }) {
- 
   const data = yield fetch(`${NEW_HOST}/signup`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json","Access-Control-Allow-Origin":"*" },
     body: JSON.stringify(payload),
   })
     .then((res) => {
@@ -43,7 +44,10 @@ export function* GetRegistration({ payload }) {
     });
   if (data.status === true) {
     localStorage.setItem("Token", data.Token);
-  alert(data.message)
+    alert(data.message);
+    window.location="/signin"
+  }else{
+    alert(data.message);
   }
 
   yield put({ type: "GOT_ADMIN", data });
@@ -55,6 +59,7 @@ export function* getAuthorData() {
     method: "get",
     headers: {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin":"*",
       Authorization: "Bearer" + " " + token,
     },
   })
@@ -64,6 +69,7 @@ export function* getAuthorData() {
     .catch((error) => {
       throw error;
     });
+  
   yield put({ type: "GOT_AUTHOR", data });
 }
 
@@ -73,6 +79,7 @@ export function* addAuthor({ payload }) {
   const data = yield fetch(`${NEW_HOST}/auth/author`, {
     method: "post",
     headers: {
+      "Access-Control-Allow-Origin":"*",
       "Content-Type": "application/json",
       Authorization: "Bearer" + " " + token,
     },
@@ -84,7 +91,14 @@ export function* addAuthor({ payload }) {
     .catch((error) => {
       throw error;
     });
-  console.log(data);
+    if (data.status === true) {
+
+      alert(data.message);
+
+    }else{
+      alert(data.message);
+    }
+  
   yield put({ type: "GOT_kjjkAUTHOR", data });
 }
 
@@ -94,6 +108,7 @@ export function* addBook({ payload }) {
   const data = yield fetch(`${NEW_HOST}/auth/book`, {
     method: "post",
     headers: {
+      "Access-Control-Allow-Origin":"*",
       "Content-Type": "application/json",
       Authorization: "Bearer" + " " + token,
     },
@@ -105,7 +120,13 @@ export function* addBook({ payload }) {
     .catch((error) => {
       throw error;
     });
-  console.log(data);
+    if (data.status === true) {
+  
+      alert(data.message);
+      
+    }else{
+      alert(data.message);
+    }
   yield put({ type: "GOT_nmAUTHOR", data });
 }
 export function* getBooks() {
@@ -113,6 +134,7 @@ export function* getBooks() {
   const data = yield fetch(`${NEW_HOST}/auth/book`, {
     method: "get",
     headers: {
+      "Access-Control-Allow-Origin":"*",
       "Content-Type": "application/json",
       Authorization: "Bearer" + " " + token,
     },
@@ -126,11 +148,11 @@ export function* getBooks() {
   yield put({ type: "GOT_BOOK", data });
 }
 export function* removebook({ payload }) {
-
   const token = localStorage.getItem("Token");
   const data = yield fetch(`${NEW_HOST}/auth/book/delete`, {
     method: "post",
     headers: {
+      "Access-Control-Allow-Origin":"*",
       "Content-Type": "application/json",
       Authorization: "Bearer" + " " + token,
     },
@@ -142,8 +164,12 @@ export function* removebook({ payload }) {
     .catch((error) => {
       throw error;
     });
-  console.log(data);
+    if (data.status === true) {
+  
+      alert(data.message);
+      
+    }else{
+      alert(data.message);
+    }
   yield put({ type: "GOT_BOOK", data });
 }
-
-

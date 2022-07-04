@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import React from "react";
 import "./Topbar.css";
 import { useDispatch, useSelector } from "react-redux";
 import SearchIcon from "@material-ui/icons/Search";
+import { isLoggedIn } from "../../utils";
 
 const Topbar = () => {
+  const nav =useNavigate()
   const [searchData, setSearchData] = React.useState("");
   const dispatch = useDispatch();
 
@@ -13,8 +15,8 @@ const Topbar = () => {
   };
 
   const logout = () => {
-    localStorage.setItem("Token", "");
-    window.location.pathname = "/";
+    localStorage.removeItem("Token");
+window.location ="/"
   };
 
   return (
@@ -23,30 +25,23 @@ const Topbar = () => {
         <div id="logo">
           <h1>
             <Link to="/">
-              <span className="blue-text">SHOP</span>LANE
+              <span className="blue-text">BOOK</span>LANE
             </Link>
           </h1>
         </div>
         <nav>
           <Link to="/author">Add author</Link>
         </nav>
-        {/* <div id="DehazeIcon" onClick={() => setNavbar(!Navbar)}>
-     <DehazeIcon />
-   </div> */}
+      
 
         <div id="link">
-          <div className="search-wrapper">
-            <input
-              type="text"
-              onChange={(e) => setSearchData(e.target.value)}
-            />
-            <span onClick={searchHandleChange}>
-              <SearchIcon />
-            </span>
-          </div>
-          <div onClick={() => logout()}>
-            <h3>logout</h3>
-          </div>
+       {isLoggedIn()?<><div onClick={() => logout()}>
+            <h4>logout</h4>
+          </div></>:<>
+          <Link to="/signin">
+          Sign In</Link>
+          </>}
+          
         </div>
       </header>
     </div>

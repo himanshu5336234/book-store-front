@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route ,Navigate} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./components/Home/Home";
 import Topbar from "./components/Topbar/Topbar";
 
@@ -28,23 +28,24 @@ function App() {
 
   return (
     <div className="container" >
-{}
+      { }
       <BrowserRouter>
         <StoreProvider store={store}>
           <Topbar />
           <Routes >
-            
-            <Route exact path="/" element={isLoggedIn()?<Home />:<Signup Signup={false} />} />
-            
-            <Route exact path="/author" element={isLoggedIn()?<Addauthor />:<Signup Signup={false}/>} />
-            <Route  path="/signup" element={isLoggedIn()?<Home/>:<Signup Signup={true}  />}  >
-          
-            </Route>
-            <Route exact path="/signin" element={<Signup Signup={false}  />} />
-           
+
+            <Route exact path="/" element={isLoggedIn() ? <Home /> : <Signup Signup={false} />} />
+
+            <Route exact path="/author" element={isLoggedIn() ? <Addauthor /> : <Navigate replace to="/" />} />
+            <Route exact path="/signup" element={isLoggedIn() ? <Home /> :<><Signup Signup={true} /></>}/>
+            <Route exact path="/signin" element={isLoggedIn() ? <Home /> :<><Signup Signup={false} /></>}/>
+              <Route
+              path="/*"
+              element={<Navigate to="/" />}
+            />
 
           </Routes>
-     
+
         </StoreProvider>
       </BrowserRouter>
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-
+import { Link } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -10,14 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, Divider } from "@material-ui/core";
-
-// import { ToastContainer, toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux";
-
-// // import 'react-toastify/dist/ReactToastify.css';
-// import LogoDark2 from "../../assets/img/LogoDark2.png";
-// import { isLoggedIn } from "../../utils";
-
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: "100vh",
@@ -211,97 +204,105 @@ export default function Signup({ Signup }) {
                 >
                   Submit
                 </Button>
+                <Typography
+                  className={classes.greyText}
+                  style={{ textAlign: "center", margin: "20px 0" }}
+                >
+                  Sign In
+                  <Link to="/signin" className={classes.links}>
+                    {" Sign In"}
+                  </Link>
+                </Typography>
               </form>
             );
           }}
         </Formik>
       );
-    }
-    else{
-      return(<>
-      
-      <Formik
-      initialValues={{ email: "", password: "" }}
-      onSubmit={async values => {
-        dispatch({ type: "LOGIN", payload: values });
+    } else {
+      return (
+        <>
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            onSubmit={async (values) => {
+              dispatch({ type: "LOGIN", payload: values });
+            }}
+            validationSchema={Yup.object().shape({
+              email: Yup.string().email().required("Required"),
+              password: Yup.string().required("Required"),
+            })}
+          >
+            {(props) => {
+              const {
+                values,
+                touched,
+                errors,
+                dirty,
+                isSubmitting,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                handleReset,
+              } = props;
+              return (
+                <form onSubmit={handleSubmit}>
+                  <Typography className={classes.greyText}>Email</Typography>
+                  <TextField
+                    className={classes.inputFields}
+                    variant="outlined"
+                    margin="normal"
+                    value={values.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    size="small"
+                    id="email"
+                    fullWidth
+                  />
+                  {errors.email && touched.email && (
+                    <div className="input-feedback">{errors.email}</div>
+                  )}
+                  <Typography className={classes.greyText}>Password</Typography>
+                  <TextField
+                    size="small"
+                    className={classes.inputFields}
+                    variant="outlined"
+                    margin="normal"
+                    type={"password"}
+                    id="password"
+                    fullWidth
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.password && touched.password && (
+                    <div className="input-feedback">{errors.password}</div>
+                  )}
 
-      }}
-      validationSchema={Yup.object().shape({
-  
-        email: Yup.string().email()
-          .required("Required"),
-        password: Yup.string()
-          .required("Required"),
-         
-      })}
-    >
-      {props => {
-        const {
-          values,
-          touched,
-          errors,
-          dirty,
-          isSubmitting,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          handleReset
-        } = props;
-        return (
-          <form onSubmit={handleSubmit}>
-           
-     
-            <Typography className={classes.greyText}>Email</Typography>
-            <TextField
-              className={classes.inputFields}
-              variant="outlined"
-              margin="normal"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              size="small"
-              id="email"
-              fullWidth
-            />
-            {errors.email && touched.email && (
-              <div className="input-feedback">{errors.email}</div>
-            )}
-            <Typography className={classes.greyText}>Password</Typography>
-            <TextField
-              size="small"
-              className={classes.inputFields}
-              variant="outlined"
-              margin="normal"
-              type={"password"}
-              id="password"
-              fullWidth
-              value={values.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-
-            />
-            {errors.password && touched.password && (
-              <div className="input-feedback">{errors.password}</div>
-            )}
-
+                  <Button
+                    variant="contained"
+                    className={classes.circularButton}
+                    type="submit"
+                    // disabled={isSubmitting}
+                    style={{ display: "block", margin: "40px auto" }}
+                  >
+                    Submit
+                  </Button>
+                </form>
+                   
+              );
+            }}
             
-            <Button
-
-
-              variant="contained"
-              className={classes.circularButton}
-              type="submit"
-              // disabled={isSubmitting}
-              style={{ display: "block", margin: "40px auto" }}
-            >
-              Submit
-            </Button>
-        
-
-          </form>
-        );
-      }}
-    </Formik></>)
+          </Formik>
+          <Typography
+                   className={classes.greyText}
+                   style={{ textAlign: "center", margin: '20px 0' }}
+                 >
+                   Don't have an account?
+                   <Link to="/signup" className={classes.links}>
+                     {" Sign up"}
+                   </Link>
+                 </Typography>
+        </>
+      );
     }
   };
   return (
@@ -325,9 +326,7 @@ export default function Signup({ Signup }) {
         >
           {Title()}
         </div>
-        <Card className={classes.cards}>
-     {LoginForm()}
-        </Card>
+        <Card className={classes.cards}>{LoginForm()}</Card>
 
         <Typography
           className={classes.greyText}

@@ -28,7 +28,7 @@ header a {
   min-width: 346px;
   display: flex;
   position: relative;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 .search-wrapper {
