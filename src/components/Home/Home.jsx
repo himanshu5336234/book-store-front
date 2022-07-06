@@ -1,21 +1,22 @@
 import React from "react";
 import { Product } from "../Product/Product";
-import { useDispatch ,useSelector} from "react-redux";
 
+import { useNavigate } from "react-router-dom";
+import { isLoggedIn } from "../../utils";
+import { useEffect } from "react";
 
 export default function Home() {
-  const dispatch = useDispatch();
-  const { booksData, } = useSelector((state) => ({
-    booksData: state.user.booksData,
-    
-  }));
 
-  React.useEffect(() => {
-    dispatch({ type: "GET_BOOKS" });
-  }, [booksData]);
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn()) {
+      return navigate("/signin");
+    }
+  }, []);
+
   return (
     <>
- 
       <Product />
     </>
   );

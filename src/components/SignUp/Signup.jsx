@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -11,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, Divider } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
+import { isLoggedIn } from "../../utils";
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: "100vh",
@@ -76,8 +78,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Signup({ Signup }) {
   const classes = useStyles();
+  
   const dispatch = useDispatch();
+  let navigate = useNavigate();
+  const { LoginData } = useSelector((state) => ({
+    LoginData: state.user.LoginData,
+  }));
 
+
+  console.log(LoginData)
+  useEffect(() => {
+    if(isLoggedIn()){
+      return navigate("/")
+    }
+  }, [LoginData]);
 
   const Title = () => {
     if (Signup === true) {
@@ -210,7 +224,7 @@ export default function Signup({ Signup }) {
                 >
                   Sign In
                   <Link to="/signin" className={classes.links}>
-                    {" Sign In"}
+                    
                   </Link>
                 </Typography>
               </form>
@@ -287,20 +301,18 @@ export default function Signup({ Signup }) {
                     Submit
                   </Button>
                 </form>
-                   
               );
             }}
-            
           </Formik>
           <Typography
-                   className={classes.greyText}
-                   style={{ textAlign: "center", margin: '20px 0' }}
-                 >
-                   Don't have an account?
-                   <Link to="/signup" className={classes.links}>
-                     {" Sign up"}
-                   </Link>
-                 </Typography>
+            className={classes.greyText}
+            style={{ textAlign: "center", margin: "20px 0" }}
+          >
+            Don't have an account?
+            <Link to="/signup" className={classes.links}>
+              {" Sign up"}
+            </Link>
+          </Typography>
         </>
       );
     }
@@ -326,7 +338,17 @@ export default function Signup({ Signup }) {
         >
           {Title()}
         </div>
-        <Card className={classes.cards}>{LoginForm()}</Card>
+        <Card className={classes.cards}>{LoginForm()}
+        
+        <Typography
+       
+            style={{ textAlign: "center", margin: "20px 0",color:"red" }}
+          >
+         {LoginData.message}
+            
+          </Typography>
+        
+        </Card>
 
         <Typography
           className={classes.greyText}

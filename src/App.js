@@ -13,7 +13,7 @@ import './App.css'
 
 import Signup from "./components/SignUp/Signup";
 import { isLoggedIn } from "./utils";
-import { Addauthor } from "./components/Addauthor/Addauthor";
+
 function App() {
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [sagaMiddleware];
@@ -34,14 +34,12 @@ function App() {
           <Topbar />
           <Routes >
 
-            <Route exact path="/" element={isLoggedIn() ? <Home /> : <Signup Signup={false} />} />
+            <Route exact path="/" element={<Home />} />
 
-            <Route exact path="/author" element={isLoggedIn() ? <Addauthor /> : <Navigate replace to="/" />} />
-            <Route exact path="/signup" element={isLoggedIn() ? <Home /> :<><Signup Signup={true} /></>}/>
-            <Route exact path="/signin" element={isLoggedIn() ? <Home /> :<><Signup Signup={false} /></>}/>
-              <Route
-              path="/*"
-              element={<Navigate to="/" />}
+
+            <Route exact path="/signup" element={<Signup Signup={true} />} />
+            <Route exact path="/signin" element={<Signup Signup={false} />} />
+            <Route exact path="/*" element={<Navigate to="/" />}
             />
 
           </Routes>

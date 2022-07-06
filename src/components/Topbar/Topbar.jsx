@@ -30,7 +30,7 @@ window.location ="/"
           </h1>
         </div>
         <nav>
-          <Link to="/author">Add author</Link>
+   
         </nav>
       
 
